@@ -6,26 +6,26 @@ import MenuCard from "./MenuCard";
 import MobileFilterSheet from "./MobileFilterSheet";
 
 const Menu = () => {
-  const [isBoB, setIsBoB] = useState(false); // false = BoB India (default), true = BoB
+  const [activeType, setActiveType] = useState("Indian Breakfast"); 
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const currentType = isBoB ? "BoB" : "BoB India";
-  const categories = ["All", ...getCategories(currentType)];
+  const menuTypes = ["Indian Breakfast", "Desi Mains", "BoB OG"];
+  const categories = ["All", ...getCategories(activeType)];
 
   const getFilteredItems = () => {
     if (searchQuery.trim()) {
-      return searchItems(searchQuery, currentType);
+      return searchItems(searchQuery, "All");
     }
     
     if (activeCategory === "All") {
-      const allCategories = getCategories(currentType);
-      return allCategories.flatMap(cat => getItemsByCategory(cat, currentType));
+      const allCategories = getCategories(activeType);
+      return allCategories.flatMap(cat => getItemsByCategory(cat, activeType));
     }
     
-    return getItemsByCategory(activeCategory, currentType);
+    return getItemsByCategory(activeCategory, activeType);
   };
 
   const filteredItems = getFilteredItems();
@@ -39,8 +39,8 @@ const Menu = () => {
     return acc;
   }, {} as Record<string, typeof filteredItems>);
 
-  const handleTypeToggle = () => {
-    setIsBoB(!isBoB);
+  const handleTypeToggle = (type: string) => {
+    setActiveType(type);
     setActiveCategory("All");
     setSearchQuery("");
   };
@@ -62,27 +62,27 @@ const Menu = () => {
             Our Menu
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Discover our carefully crafted fusion dishes, from classic English bites to authentic Indian street food
+            Discover our carefully crafted dishes, from classic English bites to authentic Indian food.
           </p>
         </motion.div>
 
-        {/* Desktop Controls */}
+        {/* --- GLOBAL SEARCH BAR + FILTER BUTTON --- */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="hidden md:block"
+          className="max-w-xl mx-auto mb-8 px-4 md:px-0"
         >
-          {/* Search Bar - Row 1 */}
-          <div className="max-w-xl mx-auto mb-6">
-            <div className="relative">
+          <div className="flex items-center gap-3">
+            {/* Search Input */}
+            <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search menu items..."
+                placeholder="Search all items..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-12 py-4 bg-card border border-border rounded-2xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                className="w-full pl-12 pr-12 py-3 bg-card border border-border rounded-2xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all shadow-sm"
               />
               {searchQuery && (
                 <button
@@ -93,14 +93,67 @@ const Menu = () => {
                 </button>
               )}
             </div>
-          </div>
 
-          {/* Category Pills + Toggle - Row 2 */}
-          <div className="flex items-center gap-4 mb-12">
-            {/* Category Pills - Scrollable */}
+            {/* Filter Button (Yellow Highlighted) */}
+            <button
+              onClick={() => setIsFilterOpen(true)}
+              className="w-12 h-12 bg-accent hover:bg-yellow-400 rounded-xl flex items-center justify-center transition-colors shadow-sm group relative"
+              title="Filter categories"
+            >
+              <Filter className="w-5 h-5 text-accent-foreground" />
+            </button>
+          </div>
+        </motion.div>
+
+        {/* --- 3-WAY TOGGLE SWITCH --- */}
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex justify-center mb-8"
+        >
+            <div className="bg-secondary p-1 rounded-full grid grid-cols-3 relative shadow-inner h-14 w-full max-w-[360px] items-center">
+                {/* The Sliding Background */}
+                <motion.div
+                    className="absolute top-1 bottom-1 bg-accent rounded-full shadow-md z-0"
+                    layout
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                    style={{
+                        width: "calc((100% - 0.5rem) / 3)",
+                        left: "0.25rem",
+                    }}
+                    animate={{
+                        x: menuTypes.indexOf(activeType) * 100 + "%"
+                    }}
+                />
+
+                {menuTypes.map((type) => (
+                    <button
+                        key={type}
+                        onClick={() => handleTypeToggle(type)}
+                        className={`relative z-10 h-full flex items-center justify-center text-center px-1 transition-colors duration-200 ${
+                            activeType === type ? 'text-accent-foreground' : 'text-muted-foreground'
+                        }`}
+                    >
+                        <span className="text-xs sm:text-sm font-bold leading-tight uppercase tracking-tight">
+                            {type}
+                        </span>
+                    </button>
+                ))}
+            </div>
+        </motion.div>
+
+        {/* Desktop Category Pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="hidden md:block"
+        >
+          <div className="flex items-center justify-center gap-4 mb-12">
             <div 
               ref={scrollRef}
-              className="flex-1 overflow-x-auto scrollbar-hide"
+              className="flex-1 overflow-x-auto scrollbar-hide flex justify-center"
             >
               <div className="flex gap-2 pb-2">
                 {categories.map((category) => (
@@ -123,104 +176,13 @@ const Menu = () => {
                 ))}
               </div>
             </div>
-
-            {/* SLIDING TOGGLE SWITCH (Desktop) */}
-            <div className="flex-shrink-0">
-               <div 
-                 className="bg-secondary p-1 rounded-full inline-flex relative shadow-inner h-11 w-52 items-center cursor-pointer"
-                 onClick={handleTypeToggle}
-               >
-                 <motion.div
-                   className="absolute top-1 bottom-1 bg-accent rounded-full shadow-md z-0"
-                   initial={false}
-                   animate={{ 
-                     x: isBoB ? "100%" : "0%",
-                     width: "50%"
-                   }}
-                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                 />
-                 
-                 <span className={`flex-1 text-center relative z-10 text-sm font-bold transition-colors duration-200 ${!isBoB ? 'text-accent-foreground' : 'text-muted-foreground'}`}>
-                   BoB India
-                 </span>
-                 <span className={`flex-1 text-center relative z-10 text-sm font-bold transition-colors duration-200 ${isBoB ? 'text-accent-foreground' : 'text-muted-foreground'}`}>
-                   BoB
-                 </span>
-               </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Mobile Controls */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="md:hidden space-y-4 mb-8"
-        >
-          {/* Search + Filter Row */}
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-10 py-3 bg-card border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all text-sm"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-secondary rounded-full transition-colors"
-                >
-                  <X className="w-3 h-3 text-muted-foreground" />
-                </button>
-              )}
-            </div>
-            <button
-              onClick={() => setIsFilterOpen(true)}
-              className="w-12 h-12 bg-accent hover:bg-gold-dark rounded-xl flex items-center justify-center transition-colors group relative"
-              title="Filter by category"
-            >
-              <Filter className="w-5 h-5 text-accent-foreground" />
-              {/* Tooltip */}
-              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-foreground text-primary-foreground text-xs px-2 py-1 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                Filter by category
-              </span>
-            </button>
-          </div>
-
-          {/* SLIDING TOGGLE SWITCH (Mobile) - Centered */}
-          <div className="flex justify-center">
-             <div 
-               className="bg-secondary p-1 rounded-full inline-flex relative shadow-inner h-11 w-52 items-center cursor-pointer"
-               onClick={handleTypeToggle}
-             >
-               <motion.div
-                 className="absolute top-1 bottom-1 bg-accent rounded-full shadow-md z-0"
-                 initial={false}
-                 animate={{ 
-                   x: isBoB ? "100%" : "0%",
-                   width: "50%"
-                 }}
-                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-               />
-               
-               <span className={`flex-1 text-center relative z-10 text-sm font-bold transition-colors duration-200 ${!isBoB ? 'text-accent-foreground' : 'text-muted-foreground'}`}>
-                 BoB India
-               </span>
-               <span className={`flex-1 text-center relative z-10 text-sm font-bold transition-colors duration-200 ${isBoB ? 'text-accent-foreground' : 'text-muted-foreground'}`}>
-                 BoB
-               </span>
-             </div>
           </div>
         </motion.div>
 
         {/* Menu Items */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${currentType}-${activeCategory}-${searchQuery}`}
+            key={`${activeType}-${activeCategory}-${searchQuery}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

@@ -44,7 +44,7 @@ const StatsSection = () => {
             className="max-w-4xl mx-auto"
           >
              <p className="text-2xl md:text-4xl text-foreground font-serif leading-snug">
-               "Where <span className="text-accent font-black decoration-4 underline-offset-4 drop-shadow-sm">English Classics</span> meet <span className="text-accent font-black decoration-4 underline-offset-4 drop-shadow-sm">Indian Street Food</span> magic."
+               "Where <span className="text-accent font-black decoration-4 underline-offset-4 drop-shadow-sm">English Classics</span> meet <span className="text-accent font-black decoration-4 underline-offset-4 drop-shadow-sm">Indian Food</span> magic."
              </p>
           </motion.div>
 

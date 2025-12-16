@@ -19,7 +19,7 @@ const About = () => {
             
             {/* Paragraph 1 with Highlights */}
             <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              Bites of Bliss brings a unique fusion of <span className="text-foreground font-bold text-accent">English classics</span> and <span className="text-foreground font-bold text-accent">Indian street food</span> to Coventry. 
+              Bites of Bliss brings a unique fusion of <span className="text-foreground font-bold text-accent">English classics</span> and <span className="text-foreground font-bold text-accent">Indian food</span> to Coventry. 
               Born from a passion for bold flavors and creative cooking, we've crafted a menu that celebrates 
               the best of both culinary traditions.
             </p>

@@ -56,7 +56,7 @@ const Hero = () => {
         >
           {/* Tagline with Bright Gold Glow */}
           <span className="inline-block text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-6 drop-shadow-[0_0_15px_rgba(255,193,7,0.8)] bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm border border-accent/50">
-            Fusion Street Food
+            Fusion Food
           </span>
         </motion.div>
 

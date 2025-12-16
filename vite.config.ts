@@ -9,7 +9,8 @@ export default defineConfig({
     port: 8080,
     strictPort: true,
     allowedHosts: [
-      "triatomically-uninwoven-ima.ngrok-free.dev" // your ngrok domain
+    
+      "unmistaking-unsymbolic-jadiel.ngrok-free.dev"
     ],
   },
   plugins: [react()],
