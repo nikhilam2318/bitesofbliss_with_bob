@@ -113,7 +113,7 @@ const Header = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              Order Now
+              Pick Up
             </motion.button>
 
             {/* ORDER ONLINE DROPDOWN */}
@@ -124,7 +124,7 @@ const Header = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Order Online
+                Online Delivery
               </motion.button>
 
               <AnimatePresence>
@@ -145,7 +145,7 @@ const Header = () => {
                     </a>
 
                     <a
-                      href="deliveroo://restaurants/735253?fulfillment_method=delivery&utm_medium=qrcode&utm_source=restaurant-hub"
+                      
                       target="_blank"
                       onClick={() => setOrderOpen(false)}
                       className="w-full bg-accent text-accent-foreground text-center px-4 py-2 rounded-md font-medium hover:bg-yellow-400 hover:shadow-[0_0_15px_rgba(255,193,7,0.5)] transition-all"
@@ -154,7 +154,7 @@ const Header = () => {
                     </a>
 
                     <a
-                      href="deliveroo://restaurants/735253?fulfillment_method=collection&utm_medium=qrcode&utm_source=restaurant-hub"
+        
                       target="_blank"
                       onClick={() => setOrderOpen(false)}
                       className="w-full bg-accent text-accent-foreground text-center px-4 py-2 rounded-md font-medium hover:bg-yellow-400 hover:shadow-[0_0_15px_rgba(255,193,7,0.5)] transition-all"
@@ -240,7 +240,6 @@ const Header = () => {
                       </a>
 
                       <a
-                        href="deliveroo://restaurants/735253?fulfillment_method=delivery&utm_medium=qrcode&utm_source=restaurant-hub"
                         onClick={() => { setOrderOpen(false); setMobileMenuOpen(false); }}
                         className="w-full bg-accent text-accent-foreground px-4 py-2 rounded-md font-medium text-center hover:bg-yellow-400 hover:shadow-[0_0_15px_rgba(255,193,7,0.5)] transition-all"
                       >
@@ -248,7 +247,6 @@ const Header = () => {
                       </a>
 
                       <a
-                        href="deliveroo://restaurants/735253?fulfillment_method=collection&utm_medium=qrcode&utm_source=restaurant-hub"
                         onClick={() => { setOrderOpen(false); setMobileMenuOpen(false); }}
                         className="w-full bg-accent text-accent-foreground px-4 py-2 rounded-md font-medium text-center hover:bg-yellow-400 hover:shadow-[0_0_15px_rgba(255,193,7,0.5)] transition-all"
                       >
