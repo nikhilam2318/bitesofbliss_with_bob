@@ -43,7 +43,7 @@ const CartDrawer = () => {
   const confirmOrder = () => {
     const itemsList = items.map((item) => {
       const totalItemPrice = (item.price * item.quantity).toFixed(2);
-      let itemString = ⁠ - ${ item.quantity }x ${ item.name } ⁠;
+      let itemString = `- ${item.quantity}x ${item.name}`;
       if (item.selectedOptions && item.selectedOptions.length > 0) {
         const optionsJoined = item.selectedOptions.join(" + ");
         itemString += ` + ${optionsJoined}`;
