@@ -51,213 +51,217 @@ const CartDrawer = () => {
       itemString += ` (${CURRENCY_SYMBOL}${totalItemPrice})`;
       return itemString;
     }).join("\n");
+    const instructionsText = instructions.trim()
+      ? `\n\nInstructions:\n${instructions}`
+      : "";
 
-    const instructionsText = instructions.trim() ? ⁠ \n\n*📝 Instructions:*\n${ instructions } ⁠ : "";
+    const message =
+      `New Order: PICKUP\n\n` +
+      `Items:\n${itemsList}\n` +
+      `${instructionsText}\n\n` +
+      `--------------------------------\n` +
+      `Subtotal: ${CURRENCY_SYMBOL}${totalPrice.toFixed(2)}\n` +
+      `Service Charge: ${CURRENCY_SYMBOL}${SERVICE_CHARGE.toFixed(2)}\n` +
+      (pickupDiscount > 0
+        ? `Discount (10%): -${CURRENCY_SYMBOL}${pickupDiscount.toFixed(2)}\n`
+        : "") +
+      `Final Total: ${CURRENCY_SYMBOL}${finalTotal.toFixed(2)}\n` +
+      `--------------------------------\n\n` +
+      `NOTE: Please collect your order after 20 minutes from ${PICKUP_ADDRESS}.\n\n` +
+      `Driving Instructions:\n` +
+      `Waze: ${WAZE_LINK}\n` +
+      `Google Maps: ${GMAPS_LINK}`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = ⁠ https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage} ⁠;
+      window.open(whatsappUrl, "_blank");
 
-    const message = ⁠ * New Order: PICKUP * 🛍️\n\n ⁠ +
-        ⁠ * Items:*\n${ itemsList } ⁠ +
-        ⁠ ${ instructionsText } \n\n ⁠ +
-        ⁠ --------------------------------\n ⁠ +
-        ⁠ Subtotal: ${ CURRENCY_SYMBOL }${ totalPrice.toFixed(2) } \n ⁠ +
-        ⁠ Service Charge: ${ CURRENCY_SYMBOL }${ SERVICE_CHARGE.toFixed(2) } \n ⁠ +
-  (pickupDiscount > 0 ? ⁠ Discount(10 %): -${ CURRENCY_SYMBOL }${ pickupDiscount.toFixed(2) } \n ⁠ : '') +
-        ⁠ * Final Total: ${ CURRENCY_SYMBOL }${ finalTotal.toFixed(2) }*\n ⁠ +
-        ⁠ --------------------------------\n\n ⁠ +
-        ⁠ * NOTE:* Please collect your order after 20 minutes from ${ PICKUP_ADDRESS }.\n\n ⁠ +
-        ⁠ * Driving Instructions:*\n ⁠ +
-        ⁠ Waze: ${ WAZE_LINK } \n ⁠ +
-        ⁠ Google Maps: ${ GMAPS_LINK } ⁠;
-
-const encodedMessage = encodeURIComponent(message);
-const whatsappUrl = ⁠ https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage} ⁠;
-  window.open(whatsappUrl, "_blank");
-
-setShowConfirmation(false);
+    setShowConfirmation(false);
   };
 
-return (
-  <AnimatePresence>
-    {isOpen && (
-      <>
-        {/* Backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-[150]"
-        />
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm z-[150]"
+          />
 
-        {/* Drawer */}
-        <motion.div
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          className="fixed right-0 top-0 h-full w-full max-w-md bg-background shadow-2xl z-[200] flex flex-col border-l border-border"
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between p-5 border-b border-border bg-background/50 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <ShoppingBag className="w-5 h-5 text-accent" />
-              <h2 className="font-serif text-xl font-bold text-foreground">Your Cart</h2>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-2 hover:bg-secondary rounded-full transition-colors"
-            >
-              <X className="w-5 h-5 text-foreground" />
-            </button>
-          </div>
-
-          {/* Cart Items Area */}
-          <div className="flex-1 overflow-y-auto p-5 bg-secondary/10">
-            {items.length === 0 ? (
-              <div className="text-center py-20 flex flex-col items-center justify-center h-full">
-                <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-6">
-                  <ShoppingBag className="w-10 h-10 text-accent/50" />
-                </div>
-                <p className="text-foreground font-medium text-lg mb-2">Your cart is empty</p>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="mt-6 px-8 py-3 bg-accent text-accent-foreground rounded-full font-bold shadow-soft hover:bg-yellow-400 transition-colors"
-                >
-                  Start Ordering
-                </button>
+          {/* Drawer */}
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-background shadow-2xl z-[200] flex flex-col border-l border-border"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-5 border-b border-border bg-background/50 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <ShoppingBag className="w-5 h-5 text-accent" />
+                <h2 className="font-serif text-xl font-bold text-foreground">Your Cart</h2>
               </div>
-            ) : (
-              <div className="space-y-6">
-                {/* List of Items */}
-                <div className="space-y-4">
-                  {items.map((item) => {
-                    const hasOptions = item.selectedOptions && item.selectedOptions.length > 0;
-                    return (
-                      <motion.div
-                        key={⁠ ${item.id}-${JSON.stringify(item.selectedOptions)} ⁠}
-                  layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="flex gap-4 bg-card rounded-xl p-3 shadow-sm border border-border/50"
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 hover:bg-secondary rounded-full transition-colors"
+              >
+                <X className="w-5 h-5 text-foreground" />
+              </button>
+            </div>
+
+            {/* Cart Items Area */}
+            <div className="flex-1 overflow-y-auto p-5 bg-secondary/10">
+              {items.length === 0 ? (
+                <div className="text-center py-20 flex flex-col items-center justify-center h-full">
+                  <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mb-6">
+                    <ShoppingBag className="w-10 h-10 text-accent/50" />
+                  </div>
+                  <p className="text-foreground font-medium text-lg mb-2">Your cart is empty</p>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="mt-6 px-8 py-3 bg-accent text-accent-foreground rounded-full font-bold shadow-soft hover:bg-yellow-400 transition-colors"
+                  >
+                    Start Ordering
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* List of Items */}
+                  <div className="space-y-4">
+                    {items.map((item) => {
+                      const hasOptions = item.selectedOptions && item.selectedOptions.length > 0;
+                      return (
+                        <motion.div
+                          key={⁠ ${item.id}-${JSON.stringify(item.selectedOptions)} ⁠}
+                    layout
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="flex gap-4 bg-card rounded-xl p-3 shadow-sm border border-border/50"
                         >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-20 h-20 object-cover rounded-lg bg-secondary"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-start mb-1">
-                      <div className="pr-2">
-                        <h3 className="font-bold text-foreground text-sm line-clamp-2">{item.name}</h3>
-                        {hasOptions && (
-                          <div className="mt-1 flex flex-col gap-0.5">
-                            {item.selectedOptions!.map((opt, i) => (
-                              <span key={i} className="text-[10px] text-muted-foreground flex items-center gap-1">
-                                <span className="w-1 h-1 rounded-full bg-accent" />
-                                {opt}
-                              </span>
-                            ))}
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-20 h-20 object-cover rounded-lg bg-secondary"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start mb-1">
+                        <div className="pr-2">
+                          <h3 className="font-bold text-foreground text-sm line-clamp-2">{item.name}</h3>
+                          {hasOptions && (
+                            <div className="mt-1 flex flex-col gap-0.5">
+                              {item.selectedOptions!.map((opt, i) => (
+                                <span key={i} className="text-[10px] text-muted-foreground flex items-center gap-1">
+                                  <span className="w-1 h-1 rounded-full bg-accent" />
+                                  {opt}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-amber-600 font-bold text-sm whitespace-nowrap">
+                          {CURRENCY_SYMBOL}{(item.price * item.quantity).toFixed(2)}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between mt-3">
+                        {hasOptions ? (
+                          <div className="text-xs font-bold text-muted-foreground bg-secondary/30 px-3 py-1.5 rounded-lg">
+                            Qty: {item.quantity}
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-3 bg-secondary/50 rounded-lg p-1">
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              className="w-7 h-7 flex items-center justify-center bg-background rounded-md shadow-sm text-foreground hover:text-accent transition-colors"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="font-bold text-sm w-4 text-center">{item.quantity}</span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="w-7 h-7 flex items-center justify-center bg-background rounded-md shadow-sm text-foreground hover:text-accent transition-colors"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
                           </div>
                         )}
+                        <button
+                          onClick={() => removeItem(item.id, item.selectedOptions)}
+                          className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
-                      <p className="text-amber-600 font-bold text-sm whitespace-nowrap">
-                        {CURRENCY_SYMBOL}{(item.price * item.quantity).toFixed(2)}
-                      </p>
                     </div>
-
-                    <div className="flex items-center justify-between mt-3">
-                      {hasOptions ? (
-                        <div className="text-xs font-bold text-muted-foreground bg-secondary/30 px-3 py-1.5 rounded-lg">
-                          Qty: {item.quantity}
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-3 bg-secondary/50 rounded-lg p-1">
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="w-7 h-7 flex items-center justify-center bg-background rounded-md shadow-sm text-foreground hover:text-accent transition-colors"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="font-bold text-sm w-4 text-center">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-7 h-7 flex items-center justify-center bg-background rounded-md shadow-sm text-foreground hover:text-accent transition-colors"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
-                        </div>
-                      )}
-                      <button
-                        onClick={() => removeItem(item.id, item.selectedOptions)}
-                        className="p-2 text-muted-foreground hover:text-destructive transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-                );
+                  </motion.div>
+                  );
                     })}
-              </div>
+                </div>
 
                   {/* Pickup Offer Section */}
-            <div className="mt-4 pt-4 border-t border-border animate-in fade-in slide-in-from-top-2">
-              <div className={⁠ border p-3 rounded-lg mb-2 ${isPickupOfferEligible ? 'bg-green-50 border-green-200' : 'bg-secondary/30 border-dashed border-accent'} ⁠}>
-              <div className="flex items-start gap-3">
-                <div className={⁠ p-2 rounded-full ${isPickupOfferEligible ? 'bg-green-100 text-green-700' : 'bg-accent/10 text-accent'} ⁠}>
-                <Percent className="w-4 h-4" />
+              <div className="mt-4 pt-4 border-t border-border animate-in fade-in slide-in-from-top-2">
+                <div className={⁠ border p-3 rounded-lg mb-2 ${isPickupOfferEligible ? 'bg-green-50 border-green-200' : 'bg-secondary/30 border-dashed border-accent'} ⁠}>
+                <div className="flex items-start gap-3">
+                  <div className={⁠ p-2 rounded-full ${isPickupOfferEligible ? 'bg-green-100 text-green-700' : 'bg-accent/10 text-accent'} ⁠}>
+                  <Percent className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className={⁠ font-bold text-sm ${isPickupOfferEligible ? 'text-green-800' : 'text-foreground'} ⁠}>
+                  Pickup Offer
+                </h4>
+                {isPickupOfferEligible ? (
+                  <p className="text-xs text-green-700 mt-1">
+                    Yay! You've unlocked <strong>10% OFF</strong> on this order.
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Add <strong>{CURRENCY_SYMBOL}{amountToPickupOffer.toFixed(2)}</strong> more to get <strong>10% OFF</strong>!
+                  </p>
+                )}
               </div>
-              <div>
-                <h4 className={⁠ font-bold text-sm ${isPickupOfferEligible ? 'text-green-800' : 'text-foreground'} ⁠}>
-                Pickup Offer
-              </h4>
-              {isPickupOfferEligible ? (
-                <p className="text-xs text-green-700 mt-1">
-                  Yay! You've unlocked <strong>10% OFF</strong> on this order.
-                </p>
-              ) : (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Add <strong>{CURRENCY_SYMBOL}{amountToPickupOffer.toFixed(2)}</strong> more to get <strong>10% OFF</strong>!
-                </p>
-              )}
             </div>
+            {!isPickupOfferEligible && (
+              <button
+                onClick={() => setIsOpen(false)}
+                className="mt-2 ml-10 text-xs flex items-center gap-1 font-bold text-accent hover:underline"
+              >
+                <ArrowLeft className="w-3 h-3" />
+                Add more items
+              </button>
+            )}
           </div>
-          {!isPickupOfferEligible && (
-            <button
-              onClick={() => setIsOpen(false)}
-              className="mt-2 ml-10 text-xs flex items-center gap-1 font-bold text-accent hover:underline"
-            >
-              <ArrowLeft className="w-3 h-3" />
-              Add more items
-            </button>
-          )}
+        </div>
+
+      {/* Cooking Instructions */}
+      <div className="pt-2">
+        <div className="flex items-center gap-2 mb-2 text-sm font-bold text-foreground">
+          <ChefHat className="w-4 h-4" />
+          Cooking Instructions (Optional)
+        </div>
+        <textarea
+          placeholder="E.g., No onions, extra spicy, allergies..."
+          className="w-full p-3 rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-accent text-sm resize-none shadow-sm"
+          rows={2}
+          value={instructions}
+          onChange={handleInstructionsChange}
+        />
+
+        <div className="mt-3 p-3 bg-red-50 border border-red-100 rounded-lg flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
+          <p className="text-xs text-red-800 leading-tight">
+            <strong>Allergy Note:</strong> If you have a food allergy or a special dietary requirement, please inform a member of staff.
+          </p>
         </div>
       </div>
 
-    {/* Cooking Instructions */}
-    <div className="pt-2">
-      <div className="flex items-center gap-2 mb-2 text-sm font-bold text-foreground">
-        <ChefHat className="w-4 h-4" />
-        Cooking Instructions (Optional)
-      </div>
-      <textarea
-        placeholder="E.g., No onions, extra spicy, allergies..."
-        className="w-full p-3 rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-accent text-sm resize-none shadow-sm"
-        rows={2}
-        value={instructions}
-        onChange={handleInstructionsChange}
-      />
-
-      <div className="mt-3 p-3 bg-red-50 border border-red-100 rounded-lg flex items-start gap-2">
-        <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
-        <p className="text-xs text-red-800 leading-tight">
-          <strong>Allergy Note:</strong> If you have a food allergy or a special dietary requirement, please inform a member of staff.
-        </p>
-      </div>
     </div>
-
-  </div>
-)}
+  )
+}
             </div >
 
   {/* Footer */ }
