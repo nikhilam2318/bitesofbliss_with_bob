@@ -4,7 +4,7 @@ import { X, Minus, Plus, Trash2, ShoppingBag, MessageCircle, Store, Truck, User,
 import { useCart } from "@/context/CartContext";
 
 // --- CONFIGURATION ---
-const WHATSAPP_NUMBER = "447350739707"; 
+const WHATSAPP_NUMBER = "7801039917"; 
 const CURRENCY_SYMBOL = "£";
 const DELIVERY_FEE = 2.49;
 const SERVICE_CHARGE = 0.50; 
