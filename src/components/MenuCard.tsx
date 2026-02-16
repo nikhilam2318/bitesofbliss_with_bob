@@ -162,6 +162,75 @@ const CUSTOMIZATIONS: Record<string, OptionGroup[]> = {
       options: EXTRA_WATER_OPTION
     }
   ],
+   "combo-chickendum": [
+    
+    {
+      title: "Choose Drink",
+      type: "radio",
+      required: true,
+      options: COMBO_DRINK_OPTIONS
+    },
+    {
+      title: "Extra Drinks",
+      type: "checkbox",
+      options: EXTRA_WATER_OPTION
+    }
+   ],
+   "combo-frypeice": [
+    
+    {
+      title: "Choose Drink",
+      type: "radio",
+      required: true,
+      options: COMBO_DRINK_OPTIONS
+    },
+    {
+      title: "Extra Drinks",
+      type: "checkbox",
+      options: EXTRA_WATER_OPTION
+    }
+   ],
+   "combo-muttonbir": [
+    
+    {
+      title: "Choose Drink",
+      type: "radio",
+      required: true,
+      options: COMBO_DRINK_OPTIONS
+    },
+    {
+      title: "Extra Drinks",
+      type: "checkbox",
+      options: EXTRA_WATER_OPTION
+    }
+   ],
+   "combo-gongurachick": [
+    {
+      title: "Choose Drink",
+      type: "radio",
+      required: true,
+      options: COMBO_DRINK_OPTIONS
+    },
+    {
+      title: "Extra Drinks",
+      type: "checkbox",
+      options: EXTRA_WATER_OPTION
+    }
+   ],
+
+   "combo-gonmuttonbir": [
+    {
+      title: "Choose Drink",
+      type: "radio",
+      required: true,
+      options: COMBO_DRINK_OPTIONS
+    },
+    {
+      title: "Extra Drinks",
+      type: "checkbox",
+      options: EXTRA_WATER_OPTION
+    }
+   ],
   "strips-custom": [
     {
         title: "Choose Size",
