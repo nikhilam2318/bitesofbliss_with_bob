@@ -287,6 +287,19 @@ const CUSTOMIZATIONS: Record<string, OptionGroup[]> = {
             { name: "Large", price: 2.00 },    
         ]
     }
+  ],
+
+  "chicken-mandi-custom": [
+    {
+        title: "Choose Portion",
+        type: "radio",
+        required: true,
+        options: [
+            { name: "1 person", price: 0},     
+            { name: "2 person", price: 7.00 }, 
+            { name: "4 person", price: 21 },    
+        ]
+    }
   ]
 };
 

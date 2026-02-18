@@ -121,7 +121,9 @@ export const menuItems: MenuItem[] = [
   { id: 76, name: "Chicken Pakodi", price: 4.99, category: "BOB STARTER PACK", type: "Desi Mains", image: "/images/chicken_pakodi.jpg" },
   { id: 77, name: "Mirchi Bajji", price: 3.99, category: "BOB STARTER PACK", type: "Desi Mains", image: "/images/mirchibajji.jpg" },
   { id: 78, name: "Punugulu", price: 4.50, category: "BOB STARTER PACK", type: "Desi Mains", image: "/images/punugulu.webp" },
-
+  
+  //BOB MANDI
+  { id: 83, name: "Chicken Mandi", price: 10.99, category: "BOB MANDI", type: "Desi Mains", image: "/images/chickmandi.jpeg", customizationId: "chicken-mandi-custom" },
 ];
 
 export const getCategories = (type?: string) => {
