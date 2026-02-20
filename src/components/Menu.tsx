@@ -11,8 +11,9 @@ const Menu = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const menuTypes = ["Indian Breakfast", "Desi Mains", "BoB OG","Combos"];
 
-  const menuTypes = ["Indian Breakfast", "Desi Mains", "BoB OG"];
+  
   const categories = ["All", ...getCategories(activeType)];
 
   const getFilteredItems = () => {
@@ -112,19 +113,20 @@ const Menu = () => {
             viewport={{ once: true }}
             className="flex justify-center mb-8"
         >
-            <div className="bg-secondary p-1 rounded-full grid grid-cols-3 relative shadow-inner h-14 w-full max-w-[360px] items-center">
+            <div className="bg-secondary p-1 rounded-full grid grid-cols-4 relative shadow-inner h-14 w-full max-w-[450px] items-center">
                 {/* The Sliding Background */}
                 <motion.div
                     className="absolute top-1 bottom-1 bg-accent rounded-full shadow-md z-0"
                     layout
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     style={{
-                        width: "calc((100% - 0.5rem) / 3)",
+                        width: "calc((100% - 0.5rem) / 4)",
                         left: "0.25rem",
                     }}
                     animate={{
-                        x: menuTypes.indexOf(activeType) * 100 + "%"
-                    }}
+  translateX: `${menuTypes.indexOf(activeType) * 100}%`
+}}
+
                 />
 
                 {menuTypes.map((type) => (
@@ -227,6 +229,7 @@ const Menu = () => {
             setActiveCategory(cat);
             setSearchQuery("");
           }}
+
         />
       </div>
     </section>

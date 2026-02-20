@@ -3,7 +3,7 @@ export interface MenuItem {
   name: string;
   price: number;
   category: string;
-  type: "BoB OG" | "Indian Breakfast" | "Desi Mains";
+  type: "BoB OG" | "Indian Breakfast" | "Desi Mains" | "Combos";
   image: string;
   description?: string;
   customizationId?: string; // New field to trigger modals
@@ -21,14 +21,14 @@ export const menuItems: MenuItem[] = [
   { id: 19, name: "BOB Smash Lamb Burger", price: 5.99, category: "THE BIG N' SPICY", type: "BoB OG", image: "/images/lambburger.jpg", customizationId: "burger-lamb" },
 
   // COMBOS
-  { id: 25, name: "4 Mexican Tacos Combo", description: "Includes Regular fries + Soft drink", price: 11.99, category: "COMBOS", type: "BoB OG", image: "/images/combo.jpg", customizationId: "combo-4tacos" },
-  { id: 26, name: "2 Nashville Chicken Burgers Combo", description: "Includes Regular fries + Soft drink", price: 12.99, category: "COMBOS", type: "BoB OG", image: "/images/2nashville-combo.jpg", customizationId: "combo-2nashville" },
-  { id: 27, name: "2 Mexican Tacos Combo", description: "Includes Regular fries + Soft drink", price: 12.99, category: "COMBOS", type: "BoB OG", image: "/images/2tacos-combo.jpg", customizationId: "combo-2tacos" },
-  { id: 179, name:"Chicken Dum Biryani", description: "Includes Chicken 65 + Soft drink", price: 12.99, category: "COMBOS", type: "BoB OG", image: "/images/chickendum.png", customizationId: "combo-chickendum"},
-  { id: 180, name:"Chicken Fry Piece Biryani", description: "Includes Chilli chicken + Soft drink", price: 13.99, category: "COMBOS", type: "BoB OG", image: "/images/frypeice.png", customizationId: "combo-frypeice"},
-  { id: 181, name:"Mutton Fry Peice Biryani", description: "Includes Chilli chicken + Soft drink", price: 13.99, category: "COMBOS", type: "BoB OG", image: "/images/muttonfry.jpeg", customizationId: "combo-muttonbir"},
-  { id: 182, name:"Gongura Chicken Biryani", description: "Includes Chilli chicken + Soft drink", price: 14.99, category: "COMBOS", type: "BoB OG", image: "/images/gongura_chickenbiryani.webp", customizationId: "combo-gongurachick"},
-  { id: 183, name:"Gongura Mutton Biryani", description: "Includes Chicken 65 + Soft drink", price: 14.99, category: "COMBOS", type: "BoB OG", image: "/images/gongura_muttonbiryani.jpg", customizationId: "combo-gonmuttonbir"},
+  { id: 25, name: "4 Mexican Tacos Combo", description: "Includes Regular fries + Soft drink", price: 11.99, category: "COMBOS", type: "Combos", image: "/images/combo.jpg", customizationId: "combo-4tacos" },
+  { id: 26, name: "2 Nashville Chicken Burgers Combo", description: "Includes Regular fries + Soft drink", price: 12.99, category: "COMBOS", type: "Combos", image: "/images/2nashville-combo.jpg", customizationId: "combo-2nashville" },
+  { id: 27, name: "2 Mexican Tacos Combo", description: "Includes Regular fries + Soft drink", price: 12.99, category: "COMBOS", type: "Combos", image: "/images/2tacos-combo.jpg", customizationId: "combo-2tacos" },
+  { id: 179, name:"Chicken Dum Biryani", description: "Includes Chicken 65 + Soft drink", price: 12.99, category: "COMBOS", type: "Combos", image: "/images/chickendum.png", customizationId: "combo-chickendum"},
+  { id: 180, name:"Chicken Fry Piece Biryani", description: "Includes Chilli chicken + Soft drink", price: 13.99, category: "COMBOS", type: "Combos", image: "/images/frypeice.png", customizationId: "combo-frypeice"},
+  { id: 181, name:"Mutton Fry Peice Biryani", description: "Includes Chilli chicken + Soft drink", price: 13.99, category: "COMBOS", type: "Combos", image: "/images/muttonfry.jpeg", customizationId: "combo-muttonbir"},
+  { id: 182, name:"Gongura Chicken Biryani", description: "Includes Chilli chicken + Soft drink", price: 14.99, category: "COMBOS", type: "Combos", image: "/images/gongura_chickenbiryani.webp", customizationId: "combo-gongurachick"},
+  { id: 183, name:"Gongura Mutton Biryani", description: "Includes Chicken 65 + Soft drink", price: 14.99, category: "COMBOS", type: "Combos", image: "/images/gongura_muttonbiryani.jpg", customizationId: "combo-gonmuttonbir"},
 
 
   // FRYER'S CLUB (Consolidated Items with Customizations)
