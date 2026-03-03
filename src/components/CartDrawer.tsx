@@ -9,6 +9,7 @@ const CURRENCY_SYMBOL = "£";
 const DELIVERY_FEE = 2.49;
 const SERVICE_CHARGE = 0.50; 
 const FREE_DELIVERY_THRESHOLD = 25.00;
+const MIN_DELIVERY_ORDER = 15.00; // Minimum subtotal required for delivery
 const PICKUP_ADDRESS = "577 Stoney Stanton rd, CV6 5ED";
 
 // --- LINKS ---
@@ -89,7 +90,11 @@ const CartDrawer = () => {
     ? totalPrice * PICKUP_DISCOUNT_PERCENTAGE 
     : 0;
   const amountToPickupOffer = PICKUP_OFFER_THRESHOLD - totalPrice;
+
+  const isDeliveryEligible = totalPrice >= MIN_DELIVERY_ORDER;
+const amountToMinDelivery = MIN_DELIVERY_ORDER - totalPrice;
   const finalTotal = totalPrice + currentDeliveryFee + currentServiceCharge - pickupDiscount;
+
 
   // Handle Input Changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -104,6 +109,9 @@ const CartDrawer = () => {
 
   const handleOrderClick = () => {
     if (items.length === 0) return;
+    if (orderType === "delivery" && !isDeliveryEligible) {
+    return;
+  }
 
     if (orderType === 'delivery') {
       const newErrors: {[key: string]: boolean} = {};
@@ -339,54 +347,103 @@ const CartDrawer = () => {
                         Pickup
                       </button>
                       <button
-                        onClick={() => setOrderType('delivery')}
-                        className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 transition-all font-medium ${
-                          orderType === 'delivery' 
-                            ? 'border-accent bg-accent/10 text-foreground' 
-                            : 'border-border bg-transparent text-muted-foreground hover:border-accent/50'
-                        }`}
-                      >
-                        <Truck className="w-4 h-4" />
-                        Delivery
-                      </button>
+  onClick={() => {
+    if (isDeliveryEligible) {
+      setOrderType("delivery");
+    }
+  }}
+  disabled={!isDeliveryEligible}
+  className={`flex items-center justify-center gap-2 p-3 rounded-lg border-2 transition-all font-medium ${
+    orderType === "delivery"
+      ? "border-accent bg-accent/10 text-foreground"
+      : "border-border bg-transparent text-muted-foreground hover:border-accent/50"
+  } ${!isDeliveryEligible ? "opacity-50 cursor-not-allowed" : ""}`}
+>
+  <Truck className="w-4 h-4" />
+  Delivery
+</button>
                     </div>
 
                     {/* Logic: Pickup Selected - Show Offer */}
+                    
                     {orderType === 'pickup' && (
-                      <div className="mt-4 pt-4 border-t border-border animate-in fade-in slide-in-from-top-2">
-                        <div className={`border p-3 rounded-lg mb-2 ${isPickupOfferEligible ? 'bg-green-50 border-green-200' : 'bg-secondary/30 border-dashed border-accent'}`}>
-                           <div className="flex items-start gap-3">
-                             <div className={`p-2 rounded-full ${isPickupOfferEligible ? 'bg-green-100 text-green-700' : 'bg-accent/10 text-accent'}`}>
-                                <Percent className="w-4 h-4" />
-                             </div>
-                             <div>
-                                <h4 className={`font-bold text-sm ${isPickupOfferEligible ? 'text-green-800' : 'text-foreground'}`}>
-                                  Pickup Offer
-                                </h4>
-                                {isPickupOfferEligible ? (
-                                   <p className="text-xs text-green-700 mt-1">
-                                     Yay! You've unlocked <strong>10% OFF</strong> on this order.
-                                   </p>
-                                ) : (
-                                   <p className="text-xs text-muted-foreground mt-1">
-                                     Add <strong>{CURRENCY_SYMBOL}{amountToPickupOffer.toFixed(2)}</strong> more to get <strong>10% OFF</strong>!
-                                   </p>
-                                )}
-                             </div>
-                           </div>
-                           
-                           {!isPickupOfferEligible && (
-                              <button 
-                                onClick={() => setIsOpen(false)}
-                                className="mt-2 ml-10 text-xs flex items-center gap-1 font-bold text-accent hover:underline"
-                              >
-                                <ArrowLeft className="w-3 h-3" />
-                                Add more items
-                              </button>
-                           )}
-                        </div>
-                      </div>
-                    )}
+  <div className="mt-4 pt-4 border-t border-border animate-in fade-in slide-in-from-top-2">
+
+    {/* ---------------- Pickup Offer Box ---------------- */}
+    <div
+      className={`border p-3 rounded-lg mb-3 ${
+        isPickupOfferEligible
+          ? "bg-green-50 border-green-200"
+          : "bg-secondary/30 border-dashed border-accent"
+      }`}
+    >
+      <div className="flex items-start gap-3">
+        <div
+          className={`p-2 rounded-full ${
+            isPickupOfferEligible
+              ? "bg-green-100 text-green-700"
+              : "bg-accent/10 text-accent"
+          }`}
+        >
+          <Percent className="w-4 h-4" />
+        </div>
+
+        <div>
+          <h4
+            className={`font-bold text-sm ${
+              isPickupOfferEligible ? "text-green-800" : "text-foreground"
+            }`}
+          >
+            Pickup Offer
+          </h4>
+
+          {isPickupOfferEligible ? (
+            <p className="text-xs text-green-700 mt-1">
+              🎉 You've unlocked <strong>10% OFF</strong> on this order.
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground mt-1">
+              Add{" "}
+              <strong>
+                {CURRENCY_SYMBOL}
+                {amountToPickupOffer.toFixed(2)}
+              </strong>{" "}
+              more to get <strong>10% OFF</strong>!
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+
+    {/* ---------------- Delivery Unlock Box (SEPARATE) ---------------- */}
+    {!isDeliveryEligible && (
+      <div className="bg-blue-50 border border-blue-100 p-3 rounded-lg flex items-start gap-2">
+        <Truck className="w-4 h-4 text-blue-600 mt-0.5" />
+        <p className="text-xs text-blue-800">
+          Add{" "}
+          <strong>
+            {CURRENCY_SYMBOL}
+            {amountToMinDelivery.toFixed(2)}
+          </strong>{" "}
+          more to unlock delivery (Min{" "}
+          {CURRENCY_SYMBOL}
+          {MIN_DELIVERY_ORDER.toFixed(2)})
+        </p>
+      </div>
+    )}
+
+    {/* Add More Items Button */}
+    {!isPickupOfferEligible && (
+      <button
+        onClick={() => setIsOpen(false)}
+        className="mt-3 text-xs flex items-center gap-1 font-bold text-accent hover:underline"
+      >
+        <ArrowLeft className="w-3 h-3" />
+        Add more items
+      </button>
+    )}
+  </div>
+)}
 
                     {/* Logic: Delivery Selected */}
                     {orderType === 'delivery' && (
@@ -409,6 +466,7 @@ const CartDrawer = () => {
                                 </button>
                              </div>
                            )}
+
 
                            {/* Delivery Form */}
                            <div className="space-y-3">
@@ -494,15 +552,22 @@ const CartDrawer = () => {
                    
                    {/* Delivery Fee Line */}
                    {orderType === 'delivery' && (
-                     <div className="flex items-center justify-between text-muted-foreground">
-                       <span>Delivery Fee</span>
-                       {isFreeDelivery ? (
-                         <span className="text-green-600 font-bold">FREE</span>
-                       ) : (
-                         <span>{CURRENCY_SYMBOL}{DELIVERY_FEE.toFixed(2)}</span>
-                       )}
-                     </div>
-                   )}
+  !isDeliveryEligible ? (
+    <div className="flex items-center justify-between text-red-600 font-medium">
+      <span>Delivery</span>
+      <span>Min {CURRENCY_SYMBOL}{MIN_DELIVERY_ORDER.toFixed(2)}</span>
+    </div>
+  ) : (
+    <div className="flex items-center justify-between text-muted-foreground">
+      <span>Delivery Fee</span>
+      {isFreeDelivery ? (
+        <span className="text-green-600 font-bold">FREE</span>
+      ) : (
+        <span>{CURRENCY_SYMBOL}{DELIVERY_FEE.toFixed(2)}</span>
+      )}
+    </div>
+  )
+)}
 
                    {/* Service Charge Line - Shows for BOTH now */}
                    <div className="flex items-center justify-between text-muted-foreground">
